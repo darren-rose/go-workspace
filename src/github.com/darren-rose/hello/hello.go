@@ -3,6 +3,7 @@ package main
 import (
   "fmt"
   "math"
+  "net/http"
 )
 
 type Person struct {
@@ -51,6 +52,14 @@ func adder() func(int) int {
   }
 }
 
+func index(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "<h1>home</h1>")
+}
+
+func about(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "<h1>about</h1>")
+}
+
 func main() {
 
   c := Circle{5}
@@ -83,4 +92,7 @@ func main() {
   fmt.Println(a, *b)
   fmt.Printf("%T %T\n",  a, b)
 
+  http.HandleFunc("/", index)
+  http.HandleFunc("/about", about)
+  http.ListenAndServe(":3000", nil)
 }
